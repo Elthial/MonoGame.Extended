@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Extended
 {
-    public class FramesPerSecondCounter : IUpdate
+    public class FramesPerSecondCounter : IUpdate, IDraw
     {
         private static readonly TimeSpan _oneSecondTimeSpan = new TimeSpan(0, 0, 1);
         private int _framesCounter;
@@ -15,9 +15,9 @@ namespace MonoGame.Extended
 
         public int FramesPerSecond { get; private set; }
 
-        public void Update(GameTime gameTime)
+        public void Update(float elapsedSeconds)
         {
-            _timer += gameTime.ElapsedGameTime;
+            _timer += TimeSpan.FromSeconds(elapsedSeconds);
             if (_timer <= _oneSecondTimeSpan)
                 return;
 
@@ -26,7 +26,7 @@ namespace MonoGame.Extended
             _timer -= _oneSecondTimeSpan;
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(float elapsedSeconds)
         {
             _framesCounter++;
         }

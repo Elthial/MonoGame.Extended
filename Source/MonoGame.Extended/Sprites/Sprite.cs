@@ -3,24 +3,22 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.TextureAtlases;
+using Newtonsoft.Json;
 
 namespace MonoGame.Extended.Sprites
 {
     public class Sprite : IColorable
     {
-        private TextureRegion2D _textureRegion;
-
+        [JsonConstructor]
         public Sprite(TextureRegion2D textureRegion)
         {
-            if (textureRegion == null) throw new ArgumentNullException(nameof(textureRegion));
-
             _textureRegion = textureRegion;
 
             Alpha = 1.0f;
             Color = Color.White;
             IsVisible = true;
             Effect = SpriteEffects.None;
-            OriginNormalized = new Vector2(0.5f, 0.5f);
+            OriginNormalized = _defaultOriginNormalized;
             Depth = 0.0f;
         }
 
@@ -33,18 +31,21 @@ namespace MonoGame.Extended.Sprites
         public float Depth { get; set; }
         public object Tag { get; set; }
 
+        private static readonly Vector2 _defaultOriginNormalized = new Vector2(0.5f, 0.5f);
+
         public Vector2 OriginNormalized
         {
-            get { return new Vector2(Origin.X/TextureRegion.Width, Origin.Y/TextureRegion.Height); }
-            set { Origin = new Vector2(value.X*TextureRegion.Width, value.Y*TextureRegion.Height); }
+            get => TextureRegion == null ? _defaultOriginNormalized : new Vector2(Origin.X / TextureRegion.Width, Origin.Y / TextureRegion.Height);
+            set
+            {
+                if (TextureRegion != null)
+                    Origin = new Vector2(value.X * TextureRegion.Width, value.Y * TextureRegion.Height);
+            }
         }
 
         public Color Color { get; set; }
 
-        public RectangleF GetBoundingRectangle(Transform2 transform)
-        {
-            return GetBoundingRectangle(transform.Position, transform.Rotation, transform.Scale);
-        }
+        public RectangleF GetBoundingRectangle(Transform2 transform) => GetBoundingRectangle(transform.Position, transform.Rotation, transform.Scale);
 
         public RectangleF GetBoundingRectangle(Vector2 position, float rotation, Vector2 scale)
         {
@@ -58,14 +59,12 @@ namespace MonoGame.Extended.Sprites
         public Vector2 Origin { get; set; }
         public SpriteEffects Effect { get; set; }
 
+        private TextureRegion2D _textureRegion;
         public TextureRegion2D TextureRegion
         {
-            get { return _textureRegion; }
+            get => _textureRegion;
             set
             {
-                if (value == null)
-                    throw new InvalidOperationException("TextureRegion cannot be null");
-
                 // preserve the origin if the texture size changes
                 var originNormalized = OriginNormalized;
                 _textureRegion = value;

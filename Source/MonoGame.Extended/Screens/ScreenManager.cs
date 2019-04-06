@@ -66,13 +66,13 @@ namespace MonoGame.Extended.Screens
         public override void Update(GameTime gameTime)
         {
             _activeScreen?.Update(gameTime);
-            _activeTransition?.Update(gameTime);
+            _activeTransition?.Update(gameTime.GetElapsedSeconds());
         }
 
         public override void Draw(GameTime gameTime)
         {
             _activeScreen?.Draw(gameTime);
-            _activeTransition?.Draw(gameTime);
+            _activeTransition?.Draw(gameTime.GetElapsedSeconds());
         }
     }
 }

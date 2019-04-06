@@ -25,10 +25,8 @@ namespace MonoGame.Extended.Screens.Transitions
         public event EventHandler StateChanged;
         public event EventHandler Completed;
 
-        public void Update(GameTime gameTime)
-        {
-            var elapsedSeconds = gameTime.GetElapsedSeconds();
-
+        public void Update(float elapsedSeconds)
+        {        
             switch (State)
             {
                 case TransitionState.Out:
@@ -53,6 +51,6 @@ namespace MonoGame.Extended.Screens.Transitions
             }
         }
 
-        public abstract void Draw(GameTime gameTime);
+        public abstract void Draw(float elapsedSeconds);
     }
 }

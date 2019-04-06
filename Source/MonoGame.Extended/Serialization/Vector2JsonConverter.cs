@@ -8,7 +8,7 @@ namespace MonoGame.Extended.Serialization
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var vector2 = (Vector2) value;
+            var vector2 = (Vector2)value;
             writer.WriteValue($"{vector2.X} {vector2.Y}");
         }
 
@@ -17,13 +17,15 @@ namespace MonoGame.Extended.Serialization
         {
             var values = reader.ReadAsMultiDimensional<float>();
 
-            if(values.Length == 2)
-                return new Vector2(values[0], values[1]);
-
-            if (values.Length == 1)
-                return new Vector2(values[0]);
-
-            throw new InvalidOperationException("Invalid Vector2");
+            switch (values.Length)
+            {
+                case 2:
+                    return new Vector2(values[0], values[1]);
+                case 1:
+                    return new Vector2(values[0]);
+                default:
+                    throw new InvalidOperationException("Invalid Vector2");
+            }
         }
 
         public override bool CanConvert(Type objectType)
