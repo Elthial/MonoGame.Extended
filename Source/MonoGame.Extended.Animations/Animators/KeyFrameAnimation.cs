@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MonoGame.Extended.Animations.Animators
@@ -8,8 +9,8 @@ namespace MonoGame.Extended.Animations.Animators
     {
         public const float DefaultFrameDuration = 0.2f;
 
-        public KeyFrameAnimation(int[] keyFrames)
-            : base(false)
+        public KeyFrameAnimation(string name, int[] keyFrames)
+            : base(name, false)
         {
             KeyFrames = keyFrames;
             KeyFrameIndex = IsReversed ? KeyFrames.Length - 1 : 0;
@@ -27,7 +28,7 @@ namespace MonoGame.Extended.Animations.Animators
             : KeyFrames.Length * FrameDuration;
 
         public int KeyFrameIndex { get; private set; }
-        public int CurrentFrame => KeyFrames[KeyFrameIndex];
+        public int CurrentFrame => KeyFrames.Any() ? KeyFrames[KeyFrameIndex] : 0;
 
         public float FramesPerSecond
         {

@@ -8,11 +8,14 @@ namespace MonoGame.Extended.Animations
         private readonly bool _disposeOnComplete;
         private bool _isComplete;
 
-        protected Animation(bool disposeOnComplete)
+        protected Animation(string name, bool disposeOnComplete)
         {
-            _disposeOnComplete = disposeOnComplete;
+            Name = name;
             IsPaused = false;
+            _disposeOnComplete = disposeOnComplete;          
         }
+
+        public string Name { get; }
 
         public Action OnComplete { get; set; }
 

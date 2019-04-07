@@ -31,5 +31,10 @@ namespace MonoGame.Extended.Serialization
                 .Select(textureAtlas => textureAtlas.GetRegion(name))
                 .FirstOrDefault(region => region != null);
         }
+
+        public TextureAtlas GetTextureAtlas(string name)
+        {
+            return TextureAtlases.FirstOrDefault(p => p.Name == name);
+        }
     }
 }
